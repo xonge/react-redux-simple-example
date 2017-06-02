@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const News = ({news}) => (
     <ul>
         {news.map((n, i) =>
-            <li key={i}>{n.title}<img src={n.img} /></li>
+            <li key={i}><img src={n.img} alt={n.img} /></li>
         )}
     </ul>
 )

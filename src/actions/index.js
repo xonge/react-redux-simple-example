@@ -61,7 +61,6 @@ const fetchNews = reddit => dispatch => {
 
 const shouldFetchPosts = (state, reddit) => {
     const posts = state.postsByReddit[reddit]
-    const news = []
     if (!posts) {
         return true
     }

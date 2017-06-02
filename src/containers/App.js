@@ -83,7 +83,6 @@ const mapStateToProps = state => {
     console.log(selectedReddit);
     console.log('ggggg');
     console.log(state);
-    console.log(posts);
     console.log(postsByReddit[selectedReddit]);
     console.log(newsByReddit);
     const {
