@@ -4,13 +4,6 @@ dist: trusty
 language: node_js
 node_js:
 - 6
-rvm:
-- 2.2.3
-cache:
-  directories:
-  - docs/vendor/bundle
-  - node_modules
-  - $HOME/.yarn-cache
 before_install:
 - npm install
 script:
