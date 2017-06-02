@@ -4,11 +4,13 @@ import { connect } from 'react-redux'
 import { selectReddit, fetchPostsIfNeeded, invalidateReddit } from '../actions'
 import Picker from '../components/Picker'
 import Posts from '../components/Posts'
+import News from '../components/News'
 
 class App extends Component {
     static propTypes = {
         selectedReddit: PropTypes.string.isRequired,
         posts: PropTypes.array.isRequired,
+        news: PropTypes.array.isRequired,
         isFetching: PropTypes.bool.isRequired,
         lastUpdated: PropTypes.number,
         dispatch: PropTypes.func.isRequired
@@ -39,8 +41,9 @@ class App extends Component {
     }
 
     render() {
-        const { selectedReddit, posts, isFetching, lastUpdated } = this.props
+        const { selectedReddit, posts, isFetching, lastUpdated, news } = this.props
         const isEmpty = posts.length === 0
+        const isEmpty1 = news.length === 0
         return (
             <div>
                 <Picker value={selectedReddit}
@@ -65,25 +68,52 @@ class App extends Component {
                         <Posts posts={posts} />
                     </div>
                 }
+                {isEmpty1
+                    ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
+                    : <div><News news={news} /></div>
+                }
+                
             </div>
         )
     }
 }
 
 const mapStateToProps = state => {
-    const { selectedReddit, postsByReddit } = state
+    const { selectedReddit, postsByReddit, newsByReddit } = state
+    console.log(selectedReddit);
+    console.log('ggggg');
+    console.log(state);
+    console.log(posts);
+    console.log(postsByReddit[selectedReddit]);
+    console.log(newsByReddit);
     const {
         isFetching,
         lastUpdated,
-        items: posts
+        items: posts,
     } = postsByReddit[selectedReddit] || {
         isFetching: true,
-        items: []
+        items: [],
     }
+    const {
+        items1: news,
+    } = newsByReddit[selectedReddit] || {
+        isFetching: true,
+        items1: [],
+    }
+    // news = [{title:'333'}];
+    console.log('hhhhh');
+    console.log(posts);
+    console.log(news);
+
+    // const {items: news};
+    // console.log(state);
+    // console.log(selectedReddit);
+    // console.log(posts);
 
     return {
         selectedReddit,
         posts,
+        news,
         isFetching,
         lastUpdated
     }
