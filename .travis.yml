@@ -29,3 +29,4 @@ before_install:
 install:
 - |
     yarn install
+    npm run build
