@@ -45,6 +45,7 @@ class App extends Component {
         const isEmpty = posts.length === 0
         const isEmpty1 = news.length === 0
         return (
+
             <div>
                 <Picker value={selectedReddit}
                         onChange={this.handleChange}
@@ -74,17 +75,14 @@ class App extends Component {
                 }
                 
             </div>
+
         )
     }
 }
 
 const mapStateToProps = state => {
     const { selectedReddit, postsByReddit, newsByReddit } = state
-    console.log(selectedReddit);
-    console.log('ggggg');
-    console.log(state);
-    console.log(postsByReddit[selectedReddit]);
-    console.log(newsByReddit);
+
     const {
         isFetching,
         lastUpdated,
@@ -100,9 +98,6 @@ const mapStateToProps = state => {
         items1: [],
     }
     // news = [{title:'333'}];
-    console.log('hhhhh');
-    console.log(posts);
-    console.log(news);
 
     // const {items: news};
     // console.log(state);
@@ -118,4 +113,5 @@ const mapStateToProps = state => {
     }
 }
 
+// import { withRouter } from 'react-router-dom'
 export default connect(mapStateToProps)(App)
