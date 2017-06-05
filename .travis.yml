@@ -12,7 +12,7 @@ before_install:
 script:
 - npm run build
 after_success:
-- tar -jcf busbus-react.tar.bz2 ./build    # 打包并压缩代码
+- cd ./build && tar -jcf busbus-react.tar.bz2 *    # 打包并压缩代码
 - scp -P 29581 busbus-react.tar.bz2 root@66.112.221.142:/root/work/www
-- ssh root@66.112.221.142 'cd /root/work/www/busbus-react && tar -jxf busbus-react.tar.bz2 -C busbus-react'
+- ssh -p 29581 root@66.112.221.142 'cd /root/work/www && tar -jxf busbus-react.tar.bz2 -C busbus-react'
 
