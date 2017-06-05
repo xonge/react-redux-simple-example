@@ -4,6 +4,7 @@ import {
     REQUEST_POSTS, RECEIVE_POSTS,
     RECEIVE_NEWS, REQUEST_NEWS, INVALIDATE_NEWS
 } from '../actions'
+import { routerReducer} from 'react-router-redux'
 
 const selectedReddit = (state = 'reactjs', action) => {
     switch (action.type) {
@@ -119,7 +120,8 @@ const newsByReddit = (state = { }, action) => {
 const rootReducer = combineReducers({
     postsByReddit,
     selectedReddit,
-    newsByReddit
+    newsByReddit,
+    router: routerReducer
 })
 
 export default rootReducer
