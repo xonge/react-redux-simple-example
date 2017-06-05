@@ -5,8 +5,8 @@ node_js:
 - 6
 before_install:
 - openssl aes-256-cbc -K $encrypted_1a17a39c3439_key -iv $encrypted_1a17a39c3439_iv
-  -in win10bash.enc -out ~/.ssh/win10bash -d
-- chmod 600 ~/.ssh/win10bash
+  -in win10bash.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
 - echo -e "Host 66.112.221.142\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 - npm install
 script:
