@@ -121,7 +121,7 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps)(App)*/
 
 
-import React, { Component } from 'react'
+/*import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
@@ -204,4 +204,53 @@ const mapStateToProps = (state, ownProps) => ({
 export default connect(mapStateToProps, {
   resetErrorMessage,
   loadToken
-})(App)
+})(App)*/
+
+import React from 'react';
+import {Navbar, NavBrand, Nav, NavItem} from 'react-bootstrap';
+// import {Link} from 'react-router';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {logoutAndRedirect} from '../actions';
+
+// import '../styles/core.scss';
+
+connect((state) => {
+    return {
+     isAuthenticated: state.auth.isAuthenticated
+    };
+})
+export default class CoreLayout extends React.Component {
+
+    render () {
+
+        const {dispatch} = this.props;
+
+        return (
+            <div>
+                <nav className="navbar navbar-default">
+                    <div className="container">
+                        <div className="navbar-header">
+                        </div>
+                        <div id="navbar">
+                            <ul className="nav navbar-nav navbar-right">
+                                {this.props.isAuthenticated
+                                 ? <li><a href='#' onClick={() => this.props.dispatch(logoutAndRedirect())}>Logout</a> </li>
+                                 : ''
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <div className='container'>
+                    <div className='row'>
+                        <div className='col-xs-12'>
+                            {this.props.children}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        );
+    }
+}

@@ -1,4 +1,4 @@
-import React from 'react'
+/*import React from 'react'
 import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 //把需要登录状态验证的Component传入到这个高阶函数中
@@ -42,4 +42,41 @@ export function requireAuthentication(Component) {
         state:state
     })
     return connect(mapStateToProps)(AuthenticatedComponent);
+}*/
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Provider} from 'react-redux';
+
+export function createConstants(...constants) {
+    return constants.reduce((acc, constant) => {
+        acc[constant] = constant;
+        return acc;
+    }, {});
+}
+
+export function createReducer(initialState, reducerMap) {
+    return (state = initialState, action) => {
+        const reducer = reducerMap[action.type];
+
+        return reducer
+            ? reducer(state, action.payload)
+            : state;
+    };
+}
+
+export function checkHttpStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+        return response
+    } else {
+        var error = new Error(response.statusText)
+        error.response = response
+        throw error
+    }
+}
+
+export function parseJSON(response) {
+     return response.json()
+
+
 }
