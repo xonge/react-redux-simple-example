@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+/*import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { selectReddit, fetchPostsIfNeeded, invalidateReddit } from '../actions'
@@ -17,7 +17,11 @@ class App extends Component {
     }
 
     componentDidMount() {
+        console.log('props')
+        console.log(this.props)
+        console.log(dispatch)
         const { dispatch, selectedReddit } = this.props
+        console.log(dispatch)
         dispatch(fetchPostsIfNeeded(selectedReddit))
     }
 
@@ -114,4 +118,90 @@ const mapStateToProps = state => {
 }
 
 // import { withRouter } from 'react-router-dom'
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(App)*/
+
+
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
+import Explore from '../components/Explore'
+import { resetErrorMessage, loadToken } from '../actions'
+console.log(browserHistory)
+
+class App extends Component {
+  static propTypes = {
+    // Injected by React Redux
+    errorMessage: PropTypes.string,
+    resetErrorMessage: PropTypes.func.isRequired,
+    inputValue: PropTypes.string.isRequired,
+    // Injected by React Router
+    children: PropTypes.node,
+    loadToken: PropTypes.func.isRequired,
+  }
+
+  componentWillMount() {
+    console.log(browserHistory)
+  }
+
+  handleDismissClick = e => {
+    this.props.resetErrorMessage()
+    e.preventDefault()
+  }
+
+  handleChange = nextValue => {
+    browserHistory.push(`/${nextValue}`)
+  }
+
+  handleLoadToken = () => {
+      console.log('token')
+    this.props.loadToken(this.props.fullName, true)
+  }
+
+  handleDeleteToken = () => {
+      console.log('token')
+    this.props.loadToken(this.props.fullName, true)
+  }
+
+  renderErrorMessage() {
+    const { errorMessage } = this.props
+    if (!errorMessage) {
+      return null
+    }
+
+    return (
+      <p style={{ backgroundColor: '#e99', padding: 10 }}>
+        <b>{errorMessage}</b>
+        {' '}
+        <button onClick={this.handleDismissClick}>
+          Dismiss
+        </button>
+      </p>
+    )
+  }
+
+  render() {
+      console.log('zzz')
+    const { children, inputValue } = this.props
+    
+    return (
+      <div>
+        <Explore value={inputValue}
+                 onChange={this.handleChange} onLoadTokenClick={this.handleLoadToken} onDeleteTokenClick={this.handleDeleteToken}/>
+        <hr />
+        {this.renderErrorMessage()}
+        {children}
+      </div>
+    )
+  }
+}
+
+const mapStateToProps = (state, ownProps) => ({
+  errorMessage: state.errorMessage,
+  inputValue: ownProps.location.pathname.substring(1)
+})
+
+export default connect(mapStateToProps, {
+  resetErrorMessage,
+  loadToken
+})(App)

@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { render } from 'react-dom';
 // import App from './App';
 import './index.css';
@@ -37,7 +37,7 @@ render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
             <div>
-                <Route exact path="/" component={App}/>
+                <Route exact path="/tttt" component={App}/>
                 <brick-flipbox class="demo">
                     <div>front</div>
                     <div>back</div>
@@ -94,4 +94,23 @@ render(
         </ConnectedRouter>
     </Provider>,
     document.getElementById('root')
+)*/
+
+import React from 'react'
+import { render } from 'react-dom'
+import { browserHistory } from 'react-router'
+import { createBrowserHistory } from 'history';
+import { syncHistoryWithStore, routerActions } from 'react-router-redux'
+import Root from './containers/Root'
+import configureStore from './store/configureStore'
+
+console.log(browserHistory)
+const store = configureStore()
+console.log(browserHistory)
+console.log(createBrowserHistory)
+const history = syncHistoryWithStore(browserHistory, store)
+
+render(
+  <Root store={store} history={history} />,
+  document.getElementById('root')
 )
