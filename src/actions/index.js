@@ -231,7 +231,7 @@
 // })
 
 import { checkHttpStatus, parseJSON } from '../utils';
-import {LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER, FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA} from '../constants';
+import {LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER, FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA, TEST_R} from '../constants';
 // import { pushState } from 'redux-router';
 import jwtDecode from 'jwt-decode';
 
@@ -282,6 +282,18 @@ export function logoutAndRedirect() {
 
 export const loadStarred = (email, password, redirect="/") => dispatch => {
   console.log('yyyyyy')
+}
+
+function addTodo(text) {
+  return {
+    type: TEST_R,
+    text
+  }
+}
+
+export const testr = (email, password, redirect="/") => {
+    // dispatch(addTodo('hhhh'))
+    
 }
 
 export const loginUser2 = (email, password, redirect="/") => dispatch => {

@@ -173,72 +173,98 @@ ReactDOM.render(
 
 
 // import 'babel-core/polyfill';
-import React from 'react';
+// import React from 'react';
+// import { render } from 'react-dom'
+// // import Root from './containers/Root';
+// import configureStore from './store/configureStore';
+// import {loginUserSuccess} from './actions';
+// import {Provider} from 'react-redux';
+// import routes from './routes';
+// import { Router, Route,IndexRoute,browserHistory } from 'react-router'
+// import {App} from './containers';
+// import {HomeView, LoginView, ProtectedView} from './views';
+// import {requireAuthentication} from './components/AuthenticatedComponent';
+// import { routerReducer, syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
+
+// import { createDevTools } from 'redux-devtools'
+// import LogMonitor from 'redux-devtools-log-monitor'
+// import DockMonitor from 'redux-devtools-dock-monitor'
+
+// import ReactDOM from 'react-dom'
+// import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
+
+// import {reducers} from './reducers/auth'
+// import { logger  } from 'redux-logger'
+
+// const baseHistory = browserHistory
+// const routingMiddleware = routerMiddleware(baseHistory)
+// const reducer = combineReducers(Object.assign({}, reducers, {
+//   routing: routerReducer
+// }))
+
+// const DevTools = createDevTools(
+//   <DockMonitor toggleVisibilityKey="ctrl-h"
+//                changePositionKey="ctrl-q">
+//     <LogMonitor theme="tomorrow" />
+//   </DockMonitor>
+// )
+
+// const middleware = [routingMiddleware, logger]
+// const enhancer = compose(
+//   // Middleware you want to use in development:
+//   applyMiddleware(...middleware),
+//   DevTools.instrument()
+// )
+
+// // const store = configureStore(window.__INITIAL_STATE__);
+// const store = createStore(reducer, enhancer)
+// const history = syncHistoryWithStore(baseHistory, store)
+
+
+
+// let token = localStorage.getItem('token');
+// if (token !== null) {
+//     store.dispatch(loginUserSuccess(token));
+// }
+
+// render(
+//   <Provider store={store}>
+//     <div>
+//       <Router history={history}>
+//         <Route path="/" component={HomeView}>
+//          <IndexRoute component={HomeView}/>
+//         <Route path="login" component={LoginView}/>
+//         <Route path="protected" component={requireAuthentication(ProtectedView)}/>
+//         </Route>
+//       </Router>
+//     </div>
+//   </Provider>,
+//   document.getElementById('root')
+// )
+
+import React from 'react'
 import { render } from 'react-dom'
-// import Root from './containers/Root';
-import configureStore from './store/configureStore';
-import {loginUserSuccess} from './actions';
-import {Provider} from 'react-redux';
-import routes from './routes';
-import { Router, Route,IndexRoute,browserHistory } from 'react-router'
-import {App} from './containers';
-import {HomeView, LoginView, ProtectedView} from './views';
-import {requireAuthentication} from './components/AuthenticatedComponent';
-import { routerReducer, syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
+import { createStore, applyMiddleware  } from 'redux'
+import { Provider } from 'react-redux'
+import App from './containers/App'
+import todoApp from './reducers'
 
-import { createDevTools } from 'redux-devtools'
-import LogMonitor from 'redux-devtools-log-monitor'
-import DockMonitor from 'redux-devtools-dock-monitor'
+import thunkMiddleware from 'redux-thunk'
+import {logger} from 'redux-logger'
 
-import ReactDOM from 'react-dom'
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
+let store = createStore(
+    todoApp,
+    applyMiddleware(
+    thunkMiddleware, // 允许我们 dispatch() 函数
+    //logger // 一个很便捷的 middleware，用来打印 action 日志
+  )
+  )
 
-import {reducers} from './reducers/auth'
-import { logger  } from 'redux-logger'
-
-const baseHistory = browserHistory
-const routingMiddleware = routerMiddleware(baseHistory)
-const reducer = combineReducers(Object.assign({}, reducers, {
-  routing: routerReducer
-}))
-
-const DevTools = createDevTools(
-  <DockMonitor toggleVisibilityKey="ctrl-h"
-               changePositionKey="ctrl-q">
-    <LogMonitor theme="tomorrow" />
-  </DockMonitor>
-)
-
-const middleware = [routingMiddleware, logger]
-const enhancer = compose(
-  // Middleware you want to use in development:
-  applyMiddleware(...middleware),
-  DevTools.instrument()
-)
-
-// const store = configureStore(window.__INITIAL_STATE__);
-const store = createStore(reducer, enhancer)
-const history = syncHistoryWithStore(baseHistory, store)
-
-
-
-let token = localStorage.getItem('token');
-if (token !== null) {
-    store.dispatch(loginUserSuccess(token));
-}
-
+let rootElement = document.getElementById('root')
 render(
   <Provider store={store}>
-    <div>
-      <Router history={history}>
-        <Route path="/" component={HomeView}>
-         <IndexRoute component={HomeView}/>
-        <Route path="login" component={LoginView}/>
-        <Route path="protected" component={requireAuthentication(ProtectedView)}/>
-        </Route>
-      </Router>
-    </div>
+    <App />
   </Provider>,
-  document.getElementById('root')
+  rootElement
 )
 

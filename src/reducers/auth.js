@@ -1,5 +1,5 @@
 import {createReducer} from '../utils';
-import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER} from '../constants';
+import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER, TEST_R} from '../constants';
 // import {pushState} from 'redux-router';
 import jwtDecode from 'jwt-decode';
 
@@ -38,6 +38,14 @@ export default createReducer(initialState, {
         });
     },
     [LOGOUT_USER]: (state, payload) => {
+        return Object.assign({}, state, {
+            'isAuthenticated': false,
+            'token': null,
+            'userName': null,
+            'statusText': 'You have been successfully logged out.'
+        });
+    },
+    [TEST_R]: (state, payload) => {
         return Object.assign({}, state, {
             'isAuthenticated': false,
             'token': null,
