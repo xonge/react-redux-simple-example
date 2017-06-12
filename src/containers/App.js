@@ -274,6 +274,8 @@ class App extends Component {
           <Test images={images}
           onAddClick={text =>
             dispatch(fetchAnimezilla(text))
+          } onEndTouch={text =>
+            dispatch(fetchAnimezilla(text))
           } />
         <AddTodo
           onAddClick={text =>
