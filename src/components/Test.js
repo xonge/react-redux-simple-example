@@ -4,6 +4,8 @@ import Tappable from 'react-tappable'
 export default class Test extends Component {
   constructor(props) {
     super(props);
+    console.log('par')
+    console.log(props)
     this.state = {
       value: '',
       y:'',
@@ -15,7 +17,8 @@ export default class Test extends Component {
       img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1497267581602&di=965a2d502ad068f30edcd9f30611f352&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F94cad1c8a786c91743d61a36cb3d70cf3ac757e3.jpg',
       touch_start_x: '',
       touch_end_x: '',
-      cur:0
+      cur:0,
+      img_2: ''
   }
   }
 
@@ -34,6 +37,8 @@ export default class Test extends Component {
         <button onClick={(e) => this.handleClick(e)}>
           Add
         </button>
+        <input type='text' ref='input_5' value={images.length}/>
+        <input type='text' ref='input_6' value={this.state.img_2}/>
         <input type='text' ref='input_3' value={this.state.value}/>
         <input type='text' ref='input_4' value={this.state.y}/>
       </div>
@@ -66,7 +71,14 @@ export default class Test extends Component {
     if ((touch.pageX - this.state.touch_start_x) > 50) {
       this.setState({cur: this.state.cur+1 < this.state.images.length ? this.state.cur+1 : this.state.cur});
       this.setState({img: this.state.images[this.state.cur].img})
-      // this.props.onEndTouch('ggg')
+      if (this.props.images) {
+        console.log('fffzzzzz')
+        console.log(this.props.images)
+        console.log(this.state.cur)
+        console.log(this.props.images[this.state.cur])
+      }
+      this.setState({img_2: this.props.images.lenght> 0 ? this.props.images[this.state.cur].completed : ''})
+      this.props.onEndTouch('ggg')
       this.setState({touch_start_x: touch.pageX})
       console.log(this.state.cur);
     }
