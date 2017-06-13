@@ -1,11 +1,9 @@
-import React, { Component, PropTypes } from 'react'
-import Tappable from 'react-tappable'
+import React, { Component } from 'react'
+import { PropTypes } from 'prop-types'
 
 export default class Test extends Component {
   constructor(props) {
     super(props);
-    console.log('par')
-    console.log(props)
     this.state = {
       value: '',
       y:'',
@@ -18,21 +16,19 @@ export default class Test extends Component {
       touch_start_x: '',
       touch_end_x: '',
       cur:0,
-      img_2: ''
+      img_2: '',
+      page: 1
   }
   }
 
   render() {
+    console.log('下面是父属性')
     console.log(this.props)
-    const {dispatch, images} = this.props
-    console.log('haahahahahaha')
-    console.log(images)
-    const img = images.length>1 ? images[1].img : ''
+    const { images } = this.props
+    const img = images.img
     return (
       <div className='img-wrapper' onTouchStart={e=>this.handleTouchStart(e)} onTouchMove={e=>this.handleTouchMove(e)} onTouchEnd={e=>this.handleTouchEnd(e)}>
-        <input type='text' ref='input' />
         <img src={img} alt=""/>
-        <img src={this.state.img} alt=""/>
         <input type='text' ref='input_2' />
         <button onClick={(e) => this.handleClick(e)}>
           Add
@@ -47,46 +43,44 @@ export default class Test extends Component {
 
   handleClick(e) {
     const node = this.refs.input
-    const node_2 = this.refs.input_2
     let text = node.value.trim()
-    const text_2 = node_2.value.trim()
-    text = text + text_2
     this.props.onAddClick(text)
     node.value = ''
   }
   handleTouchStart(e) {
-    console.log('fffff')
     let touch = e.targetTouches[0]; //touches数组对象获得屏幕上所有的touch，取第一个touch
-    let startPos = {x:touch.pageX,y:touch.pageY,time:+new Date}; //取第一个touch的坐标值
+    let startPos = {x:touch.pageX,y:touch.pageY,time:new Date()}; //取第一个touch的坐标值
     let isScrolling = 0; //这个参数判断是垂直滚动还是水平滚动
     console.log(startPos)
+    console.log(isScrolling)
     this.setState({touch_start_x: touch.pageX})
   }
   handleTouchMove(e) {
     let touch = e.targetTouches[0]; //touches数组对象获得屏幕上所有的touch，取第一个touch
-    let startPos = {x:touch.pageX,y:touch.pageY,time:+new Date}; //取第一个touch的坐标值
+    let startPos = {x:touch.pageX,y:touch.pageY,time:new Date()}; //取第一个touch的坐标值
     let isScrolling = 0; //这个参数判断是垂直滚动还是水平滚动
-    // console.log(startPos)
+    console.log(startPos)
+    console.log(isScrolling)
     // console.log(touch.pageX - this.state.touch_start_x)
     if ((touch.pageX - this.state.touch_start_x) > 50) {
       this.setState({cur: this.state.cur+1 < this.state.images.length ? this.state.cur+1 : this.state.cur});
       this.setState({img: this.state.images[this.state.cur].img})
       if (this.props.images) {
-        console.log('fffzzzzz')
+        console.log('right')
         console.log(this.props.images)
         console.log(this.state.cur)
         console.log(this.props.images[this.state.cur])
       }
       this.setState({img_2: this.props.images.lenght> 0 ? this.props.images[this.state.cur].completed : ''})
-      this.props.onEndTouch('ggg')
+      // this.props.onEndTouch('ggg')
       this.setState({touch_start_x: touch.pageX})
       console.log(this.state.cur);
+      this.props.onEndTouch(this.props.images.page, 'right')
     }
     if ((touch.pageX - this.state.touch_start_x) < -50) {
-      this.setState({cur: this.state.cur-1});
-      this.setState({cur: this.state.cur-1 > 0 ? this.state.cur-1 : 0});
-      console.log(this.state.cur)
-      this.setState({img: this.state.images[this.state.cur].img})
+      console.log('left')
+      console.log(this.props.images.page)
+      this.props.onEndTouch(this.props.images.page)
     }
     // this.setState({value: touch.pageX});
     // this.setState({y: touch.pageY});

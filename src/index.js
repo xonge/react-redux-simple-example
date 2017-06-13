@@ -250,7 +250,7 @@ import App from './containers/App'
 import todoApp from './reducers'
 
 import thunkMiddleware from 'redux-thunk'
-import {logger} from 'redux-logger'
+// import {logger} from 'redux-logger'
 
 let store = createStore(
     todoApp,

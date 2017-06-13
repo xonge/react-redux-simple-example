@@ -44,21 +44,37 @@ function todos(state = [], action) {
   }
 }
 
-function images(state = [], action) {
+function images(state = {
+  isFetching: false,
+  didInvalidate: false,
+  img: [],
+  page: 0
+}, action) {
   switch (action.type) {
     case 'FETCH_1':
+      console.log('开始请求api')
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false
+      })
+    case 'FAILURE':
+      console.log('请求api发生了错误')
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false
+      })
     case 'FETCH':
-    console.log('start 1')
-    console.log(action.images)
-      return [
-        ...state,
-        {
-          img: action.images ? action.images[0].img : '',
-          completed: false
-        }
-      ]
+      console.log('api返回数据')
+      console.log(state)
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: false,
+        img: action.images ? action.images[0].img : '',
+        lastUpdated: action.receivedAt,
+        page: action.page
+      })
     case ADD_TODO:
-    console.log('start')
+      console.log('start')
       return [
         ...state,
         {
@@ -151,7 +167,7 @@ const todoApp = combineReducers({
   todos,
   todos_1,
   todos_2,
-  images
+  images,
 })
 
 export default todoApp

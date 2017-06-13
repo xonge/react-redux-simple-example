@@ -255,7 +255,8 @@ export default connect(mapStateToProps, {
 //     }
 // }
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { fetchAnimezilla, addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from '../actions'
 import AddTodo from '../components/AddTodo'
@@ -266,16 +267,14 @@ import Test from '../components/Test'
 class App extends Component {
   render() {
     // Injected by connect() call:
-    const { dispatch, visibleTodos, visibilityFilter,images } = this.props
-    console.log(this.props)
-    console.log(images)
+    const { dispatch, visibleTodos, visibilityFilter,images,images_1 } = this.props
     return (
       <div>
-          <Test images={images}
+          <Test images={images} images_1={images_1}
           onAddClick={text =>
             dispatch(fetchAnimezilla(text))
-          } onEndTouch={text =>
-            dispatch(fetchAnimezilla(text))
+          } onEndTouch={(text, go) =>
+            dispatch(fetchAnimezilla(text, go))
           } />
         <AddTodo
           onAddClick={text =>
@@ -316,6 +315,8 @@ function selectTodos(todos, filter) {
       return todos.filter(todo => todo.completed)
     case VisibilityFilters.SHOW_ACTIVE:
       return todos.filter(todo => !todo.completed)
+    default:
+      return todos
   }
 }
 
@@ -325,7 +326,8 @@ function select(state) {
   return {
     visibleTodos: selectTodos(state.todos_2, state.visibilityFilter),
     visibilityFilter: state.visibilityFilter,
-    images: state.images
+    images: state.images,
+    images_1: state.images_1
   }
 }
 
