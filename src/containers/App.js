@@ -258,7 +258,7 @@ export default connect(mapStateToProps, {
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { fetchAnimezilla, addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from '../actions'
+import { fetchAnimezilla, addTodo, completeTodo, setVisibilityFilter, VisibilityFilters, fetchLogin } from '../actions'
 import AddTodo from '../components/AddTodo'
 import TodoList from '../components/TodoList'
 import Footer from '../components/Footer'
@@ -267,14 +267,17 @@ import Test from '../components/Test'
 class App extends Component {
   render() {
     // Injected by connect() call:
-    const { dispatch, visibleTodos, visibilityFilter,images,images_1 } = this.props
+    const { dispatch, visibleTodos, visibilityFilter,images,images_1,user } = this.props
+    console.log(this.props)
     return (
       <div>
-          <Test images={images} images_1={images_1}
+          <Test images={images} images_1={images_1} user={user}
           onAddClick={text =>
             dispatch(fetchAnimezilla(text))
           } onEndTouch={(text, go) =>
             dispatch(fetchAnimezilla(text, go))
+          } onLoginClick={text =>
+            dispatch(fetchLogin(text))
           } />
         <AddTodo
           onAddClick={text =>
@@ -327,7 +330,8 @@ function select(state) {
     visibleTodos: selectTodos(state.todos_2, state.visibilityFilter),
     visibilityFilter: state.visibilityFilter,
     images: state.images,
-    images_1: state.images_1
+    images_1: state.images_1,
+    user: state.login.user,
   }
 }
 

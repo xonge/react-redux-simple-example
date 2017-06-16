@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types'
 export default class Test extends Component {
   constructor(props) {
     super(props);
+    console.log(props)
     this.state = {
       value: '',
       y:'',
@@ -24,14 +25,21 @@ export default class Test extends Component {
   render() {
     console.log('下面是父属性')
     console.log(this.props)
-    const { images } = this.props
+    const { images,login } = this.props
     const img = images.img
+    console.log('------->')
+    console.log(login)
+    const access_token = login ? login.user.access_token : ''
     return (
       <div className='img-wrapper' onTouchStart={e=>this.handleTouchStart(e)} onTouchMove={e=>this.handleTouchMove(e)} onTouchEnd={e=>this.handleTouchEnd(e)}>
         <img src={img} alt=""/>
-        <input type='text' ref='input_2' />
+        <input type='text' ref='input_2' placeholder='你要跳转的页数' />
         <button onClick={(e) => this.handleClick(e)}>
-          Add
+          Go!
+        </button>
+        <input type='text' ref='input_7' value={access_token} />
+        <button onClick={(e) => this.handleLoginClick(e)}>
+          Login!
         </button>
         <input type='text' ref='input_5' value={images.length}/>
         <input type='text' ref='input_6' value={this.state.img_2}/>
@@ -42,10 +50,11 @@ export default class Test extends Component {
   }
 
   handleClick(e) {
-    const node = this.refs.input
+    const node = this.refs.input_2
     let text = node.value.trim()
+    console.log(text)
     this.props.onAddClick(text)
-    node.value = ''
+    // node.value = ''
   }
   handleTouchStart(e) {
     let touch = e.targetTouches[0]; //touches数组对象获得屏幕上所有的touch，取第一个touch
@@ -75,18 +84,21 @@ export default class Test extends Component {
       // this.props.onEndTouch('ggg')
       this.setState({touch_start_x: touch.pageX})
       console.log(this.state.cur);
-      this.props.onEndTouch(this.props.images.page, 'right')
+      this.props.onEndTouch(this.props.images.page - 1, 'right')
     }
     if ((touch.pageX - this.state.touch_start_x) < -50) {
       console.log('left')
       console.log(this.props.images.page)
-      this.props.onEndTouch(this.props.images.page)
+      this.props.onEndTouch(this.props.images.page + 1)
     }
     // this.setState({value: touch.pageX});
     // this.setState({y: touch.pageY});
     // this.setState({img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1497267581602&di=965a2d502ad068f30edcd9f30611f352&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F94cad1c8a786c91743d61a36cb3d70cf3ac757e3.jpg'});
   }
   handleTouchEnd(e) {
+  }
+  handleLoginClick(e) {
+    this.props.onLoginClick('ggg')
   }
 }
 

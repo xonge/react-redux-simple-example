@@ -95,6 +95,39 @@ function images(state = {
   }
 }
 
+function login(state = {
+  isFetching: false,
+  didInvalidate: false,
+  user: {},
+}, action) {
+  switch (action.type) {
+    case 'LOGIN':
+      console.log('开始请求api')
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false
+      })
+    case 'LOGIN_FAILURE':
+      console.log('请求api发生了错误')
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false
+      })
+    case 'LOGIN_SUCCESS':
+      console.log('api返回数据')
+      console.log(state)
+      console.log(action)
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: false,
+        user: action.user,
+        lastUpdated: action.receivedAt,
+      })
+    default:
+      return state
+  }
+}
+
 function todos_1(state = [], action) {
   switch (action.type) {
     case ADD_TODO_1:
@@ -168,6 +201,7 @@ const todoApp = combineReducers({
   todos_1,
   todos_2,
   images,
+  login,
 })
 
 export default todoApp
