@@ -1,5 +1,19 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
+import ContactForm from './ContactForm'
+import { load as loadAccount } from '../reducers/account'
+import { connect } from 'react-redux'
+
+const data = {
+  // used to populate "account" reducer when "Load" is clicked
+  firstName: 'Jane',
+  lastName: 'Doe',
+  age: '42',
+  sex: 'female',
+  employed: true,
+  favoriteColor: 'Blue',
+  bio: 'Born to write amazing Redux code.'
+}
 
 export default class Test extends Component {
   constructor(props) {
@@ -20,6 +34,11 @@ export default class Test extends Component {
       img_2: '',
       page: 1
   }
+}
+
+submit = (values) => {
+    // print the form values to the console
+    console.log(values)
   }
 
   render() {
@@ -45,6 +64,7 @@ export default class Test extends Component {
         <input type='text' ref='input_6' value={this.state.img_2}/>
         <input type='text' ref='input_3' value={this.state.value}/>
         <input type='text' ref='input_4' value={this.state.y}/>
+        <ContactForm onSubmit={this.submit} />
       </div>
     )
   }

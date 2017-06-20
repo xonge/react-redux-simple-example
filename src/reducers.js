@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux'
+import { reducer as formReducer } from 'redux-form'
+import account from './reducers/account';
 import { ADD_TODO, ADD_TODO_1, COMPLETE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters } from './actions'
 const { SHOW_ALL } = VisibilityFilters
 
@@ -202,6 +204,8 @@ const todoApp = combineReducers({
   todos_2,
   images,
   login,
+  form: formReducer,
+  account
 })
 
 export default todoApp

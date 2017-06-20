@@ -263,6 +263,9 @@ import AddTodo from '../components/AddTodo'
 import TodoList from '../components/TodoList'
 import Footer from '../components/Footer'
 import Test from '../components/Test'
+import LoginForm from '../components/LoginForm'
+import RemoteSubmitForm from '../components/RemoteSubmitForm'
+import RemoteSubmitButton from '../components/RemoteSubmitButton'
 
 class App extends Component {
   render() {
@@ -293,6 +296,9 @@ class App extends Component {
           onFilterChange={nextFilter =>
             dispatch(setVisibilityFilter(nextFilter))
           } />
+          <LoginForm />
+          <RemoteSubmitForm />
+      <RemoteSubmitButton />
       </div>
     )
   }
