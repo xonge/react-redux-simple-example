@@ -1,8 +1,8 @@
-import { SubmissionError } from 'redux-form';
+// import { SubmissionError } from 'redux-form';
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+// const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const API_ENDPOINT = 'http://busbus.app/oauth/token'
-const CSRF_TOKEN = 'API_ENDPOINT'
+// const CSRF_TOKEN = 'API_ENDPOINT'
 
 export default (async function submit(values) {
     try {

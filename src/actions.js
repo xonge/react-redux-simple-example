@@ -96,7 +96,8 @@ export function fetchAnimezilla(page, go) {
       //   page = page + 1
       // }
 
-      return fetch(`http://busbus.app/animezilla/${page}`)
+      // return fetch(`http://busbus.app/animezilla/${page}`)
+      return fetch(`http://api.busbus.club/animezilla/${page}`)
         .then(response => response.json())
         .then(json => dispatch(receiveAnimezilla(json, go, page)))
         .catch(function (e) {
