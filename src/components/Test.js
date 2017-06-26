@@ -101,7 +101,7 @@ submit = (values) => {
     console.log(startPos)
     console.log(isScrolling)
     if (localStorage.lastpage) {
-      this.props.images.page = parseInt(localStorage.lastpage)
+      this.props.images.page = parseInt(localStorage.lastpage, 10)
     }
     // console.log(touch.pageX - this.state.touch_start_x)
     if ((touch.pageX - this.state.touch_start_x) > 50) {
