@@ -241,13 +241,24 @@ ReactDOM.render(
 //   </Provider>,
 //   document.getElementById('root')
 // )
+
 import './index.css';
 import React from 'react'
 import { render } from 'react-dom'
-import { createStore, applyMiddleware  } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import App from './containers/App'
+// import AuthExample from './containers/AuthExample'
 import todoApp from './reducers'
+
+import createHistory from 'history/createBrowserHistory'
+import { Route, Redirect } from 'react-router'
+
+import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
+
+const history = createHistory()
+
+const middleware = routerMiddleware(history)
 
 import thunkMiddleware from 'redux-thunk'
 // import {logger} from 'redux-logger'
@@ -255,16 +266,82 @@ import thunkMiddleware from 'redux-thunk'
 let store = createStore(
     todoApp,
     applyMiddleware(
-    thunkMiddleware, // 允许我们 dispatch() 函数
-    //logger // 一个很便捷的 middleware，用来打印 action 日志
-  )
-  )
-
-let rootElement = document.getElementById('root')
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  rootElement
+        thunkMiddleware, // 允许我们 dispatch() 函数
+        //logger // 一个很便捷的 middleware，用来打印 action 日志
+        middleware,
+    )
 )
 
+let rootElement = document.getElementById('root')
+
+const fakeAuth = {
+  isAuthenticated: true,
+  authenticate(cb) {
+    this.isAuthenticated = true
+    localStorage.token = 'fffff'
+    setTimeout(cb, 100) // fake async
+  },
+  signout(cb) {
+    this.isAuthenticated = false
+    setTimeout(cb, 100)
+  }
+}
+
+console.log(store.getState().user.isAuth)
+console.log(store.getState())
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (
+    localStorage.token ? (
+      <Component {...props}/>
+    ) : (
+      <Redirect to={{
+        pathname: '/login',
+        state: { from: props.location }
+      }}/>
+    )
+  )}/>
+)
+
+class Login extends React.Component {
+  state = {
+    redirectToReferrer: false
+  }
+
+  login = () => {
+    fakeAuth.authenticate(() => {
+      this.setState({ redirectToReferrer: true })
+    })
+  }
+
+  render() {
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { redirectToReferrer } = this.state
+    
+    if (redirectToReferrer) {
+      return (
+        <Redirect to={from}/>
+      )
+    }
+    
+    return (
+      <div>
+        <p>You must log in to view the page at {from.pathname}</p>
+        <button onClick={this.login}>Log in</button>
+      </div>
+    )
+  }
+}
+
+render(
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
+            <div>
+                <PrivateRoute path="/" component={App} />
+                {/*<Route path="/auth" component={AuthExample}/>*/}
+                <Route path="/login" component={Login}/>
+            </div>
+        </ConnectedRouter>
+    </Provider>,
+    rootElement
+)

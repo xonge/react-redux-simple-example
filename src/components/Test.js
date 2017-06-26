@@ -60,6 +60,9 @@ submit = (values) => {
         <button onClick={(e) => this.handleLoginClick(e)}>
           Login!
         </button>
+        <button onClick={ e => this.handleLogout(e)}>
+          Logout!
+        </button>
         <input type='text' ref='input_5' value={images.length}/>
         <input type='text' ref='input_6' value={this.state.img_2}/>
         <input type='text' ref='input_3' value={this.state.value}/>
@@ -67,6 +70,13 @@ submit = (values) => {
         {/*<ContactForm onSubmit={this.submit} />*/}
       </div>
     )
+  }
+
+  handleLogout(e) {
+    this.isAuthenticated = false
+    // console.log(isAuth)
+    console.log(this.props)
+    this.props.onLogoutClick()
   }
 
   handleClick(e) {
@@ -90,6 +100,9 @@ submit = (values) => {
     let isScrolling = 0; //这个参数判断是垂直滚动还是水平滚动
     console.log(startPos)
     console.log(isScrolling)
+    if (localStorage.lastpage) {
+      this.props.images.page = parseInt(localStorage.lastpage)
+    }
     // console.log(touch.pageX - this.state.touch_start_x)
     if ((touch.pageX - this.state.touch_start_x) > 50) {
       this.setState({cur: this.state.cur+1 < this.state.images.length ? this.state.cur+1 : this.state.cur});

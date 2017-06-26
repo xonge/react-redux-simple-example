@@ -258,7 +258,7 @@ export default connect(mapStateToProps, {
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { fetchAnimezilla, addTodo, completeTodo, setVisibilityFilter, VisibilityFilters, fetchLogin } from '../actions'
+import { fetchAnimezilla, addTodo, completeTodo, setVisibilityFilter, VisibilityFilters, fetchLogin, fetchLogout } from '../actions'
 import AddTodo from '../components/AddTodo'
 import TodoList from '../components/TodoList'
 import Footer from '../components/Footer'
@@ -281,7 +281,9 @@ class App extends Component {
             dispatch(fetchAnimezilla(text, go))
           } onLoginClick={text =>
             dispatch(fetchLogin(text))
-          } />
+          } onLogoutClick={text =>
+            dispatch(fetchLogout(text))
+          }/>
         <AddTodo
           onAddClick={text =>
             dispatch(addTodo(text))
@@ -332,12 +334,14 @@ function selectTodos(todos, filter) {
 // Which props do we want to inject, given the global state?
 // Note: use https://github.com/faassen/reselect for better performance.
 function select(state) {
+  console.log('从reducer来的state：')
+  console.log(state)
   return {
     visibleTodos: selectTodos(state.todos_2, state.visibilityFilter),
     visibilityFilter: state.visibilityFilter,
     images: state.images,
     images_1: state.images_1,
-    user: state.login.user,
+    user: state.user,
   }
 }
 

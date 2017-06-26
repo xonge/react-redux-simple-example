@@ -7,6 +7,10 @@ export const ADD_TODO_1 = 'ADD_TODO_1';
 export const COMPLETE_TODO = 'COMPLETE_TODO';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 
+import createHistory from 'history/createBrowserHistory'
+
+const history = createHistory()
+
 /*
  * 其它的常量
  */
@@ -43,6 +47,9 @@ function requestAnimezilla() {
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 function receiveAnimezilla(json, go, page) {
   console.log(json)
+  console.log('收到了第' + page +'页的图片')
+  localStorage.lastpage = page
+  localStorage.lastpage_time = Date.now()
   return {
     type: 'FETCH',
     images: json,
@@ -165,5 +172,26 @@ export function fetchLogin(page, go) {
           dispatch(failureUser())
         })
     }
+  }
+}
+
+function receiveLogout() {
+  return {
+    type: 'LOGOUT_SUCCESS',
+    isAuth: false,
+    receivedAt: Date.now(),
+  }
+}
+
+function logout() {
+  history.push('/login')
+  location.reload()
+}
+
+export function fetchLogout(page, go) {
+  return (dispatch, getState) => {
+    delete localStorage.token
+    dispatch(receiveLogout())
+    setTimeout(logout, 100)
   }
 }

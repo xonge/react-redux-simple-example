@@ -4,6 +4,8 @@ import account from './reducers/account';
 import { ADD_TODO, ADD_TODO_1, COMPLETE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters } from './actions'
 const { SHOW_ALL } = VisibilityFilters
 
+import { routerReducer } from 'react-router-redux'
+
 function visibilityFilter(state = SHOW_ALL, action) {
   switch (action.type) {
     case SET_VISIBILITY_FILTER:
@@ -196,6 +198,20 @@ function todos_2(state = [], action) {
   }
 }
 
+function user(state = {
+  isAuth: false,
+}, action) {
+  switch (action.type) {
+    case 'LOGOUT_SUCCESS':
+      return {
+        ...state,
+        isAuth: false,
+      }
+    default:
+      return state
+  }
+}
+
 // 被combineReducers处理过的都会变成state，在容器组件里可以被connect第一个参数访问
 const todoApp = combineReducers({
   visibilityFilter,
@@ -205,7 +221,9 @@ const todoApp = combineReducers({
   images,
   login,
   form: formReducer,
-  account
+  account,
+  router: routerReducer,
+  user
 })
 
 export default todoApp
